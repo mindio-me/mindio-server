@@ -1,0 +1,25 @@
+# 开发环境配置（通过 spring.profiles.active=dev / SPRING_PROFILES_ACTIVE=dev 启用）
+spring:
+  config:
+    import: optional:classpath:application-local.yml
+
+# 数据初始化配置
+logging:
+  level:
+    com.entropybits.worknotes.spring_boot.config.DataInitializer: INFO
+
+# 飞书集成配置（开发环境）
+# 请将以下配置替换为你的飞书应用凭证
+# 方式1：直接在这里填写（不推荐，会提交到代码库）
+# 方式2：使用环境变量（推荐）
+#   Windows PowerShell: $env:FEISHU_APP_ID="your-app-id"
+#   Linux/Mac: export FEISHU_APP_ID="your-app-id"
+feishu:
+  # 飞书应用 App ID / App Secret 已改为按用户存储（user_credentials 表），不再从配置文件读取
+  # OAuth 回调地址（需要在飞书开放平台配置）
+  # 默认值：http://localhost:8080/api/v1/integrations/feishu/oauth/callback
+  oauth-redirect-uri: ${FEISHU_OAUTH_REDIRECT_URI:http://localhost:8080/api/v1/integrations/feishu/oauth/callback}
+  # Token 加密密钥（Base64，32 bytes，用于加密存储飞书 access token）
+  # 生成方式：使用上面的 PowerShell 命令或在线工具生成
+  token-crypto-key: ${FEISHU_TOKEN_CRYPTO_KEY:}
+

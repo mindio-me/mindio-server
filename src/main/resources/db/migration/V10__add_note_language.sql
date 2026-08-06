@@ -1,0 +1,3 @@
+ALTER TABLE notes ADD COLUMN language VARCHAR(10) NULL;
+ALTER TABLE notes ADD COLUMN source_note_id BIGINT NULL;
+ALTER TABLE notes ADD CONSTRAINT fk_note_source FOREIGN KEY (source_note_id) REFERENCES notes(id) ON DELETE SET NULL;

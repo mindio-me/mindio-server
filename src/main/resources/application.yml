@@ -1,0 +1,151 @@
+spring:
+  application:
+    name: mindio-api
+  profiles:
+    # 默认启用 dev，生产环境请通过环境变量覆盖：
+    # SPRING_PROFILES_ACTIVE=prod
+    active: ${SPRING_PROFILES_ACTIVE:dev}
+
+  # 数据库配置 (MySQL)
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:mysql://localhost:3306/mindio_app?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true}
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  # JPA/Hibernate 配置
+  jpa:
+    hibernate:
+      ddl-auto: update  # 开发环境使用 update，生产环境应使用 validate 或 none
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        format_sql: true
+    open-in-view: false
+
+  # JSON 序列化配置
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+    time-zone: UTC
+
+  # 禁用 Docker Compose
+  docker:
+    compose:
+      enabled: false
+
+  # Spring文件上传配置
+  servlet:
+    multipart:
+      # 单个文件最大大小
+      max-file-size: 50MB
+      # 单次请求文件总大小限制
+      max-request-size: 50MB
+      # 文件写入磁盘的阈值
+      file-size-threshold: 10MB
+
+# 服务器配置
+server:
+  port: 8080
+  servlet:
+    context-path: /api
+
+# JWT 配置
+jwt:
+  secret: ${JWT_SECRET:your-secret-key-change-this-in-production-must-be-at-least-256-bits}
+  expiration: 86400000  # 24小时 (毫秒)
+  refresh-expiration: 604800000  # 7天 (毫秒)
+
+tidycal:
+  # 用于校验来自 TidyCal / Zapier 的 Webhook 请求头 X-Tidycal-Secret
+  webhook-secret: ${TIDYCAL_WEBHOOK_SECRET:}
+
+# Swagger/OpenAPI 配置
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    enabled: true
+    tags-sorter: alpha
+    operations-sorter: alpha
+
+# 日志配置
+logging:
+  level:
+    com.entropybits.worknotes: DEBUG
+    org.springframework.security: DEBUG
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+
+# 文件上传配置
+worknotes:
+  upload:
+    # 文件上传根路径（绝对路径，优先级最高）
+    # 如果设置了此路径，将直接使用此路径，不再基于 web 根目录
+    # 可通过环境变量 WORKNOTES_UPLOAD_PATH 覆盖
+    # 留空则自动使用 web 根目录 + relative-path
+    path: ${WORKNOTES_UPLOAD_PATH:}
+    # 相对于 web 根目录的上传路径（当 path 为空时生效）
+    # web 根目录会自动获取（优先从 ServletContext，否则使用工作目录）
+    # 最终路径 = web根目录 + relative-path
+    relative-path: ${WORKNOTES_UPLOAD_RELATIVE_PATH:uploads}
+    # URL前缀（用于拼接可访问URL）
+    # 确保前端能够正确访问上传的文件
+    # 可通过环境变量 WORKNOTES_UPLOAD_URL_PREFIX 覆盖
+    url-prefix: ${WORKNOTES_UPLOAD_URL_PREFIX:http://localhost:8080/api}
+
+  frontend:
+    # 前端基础地址（用于生成扫码二维码URL）
+    base-url: ${WORKNOTES_FRONTEND_BASE_URL:http://localhost:10822}
+
+# 飞书集成（Wiki 导入）
+feishu:
+  # 飞书开放平台应用凭证（App ID / App Secret）已改为按用户存储（user_credentials 表），不再从配置文件读取
+  # OAuth 回调地址（需要在飞书开放平台配置为重定向 URL）
+  oauth-redirect-uri: ${FEISHU_OAUTH_REDIRECT_URI:http://localhost:8080/api/v1/integrations/feishu/oauth/callback}
+  # Feishu OpenAPI base（一般无需改）
+  base-url: ${FEISHU_BASE_URL:https://open.feishu.cn}
+  # 用于加密存储 access/refresh token（Base64，建议 32 bytes key）
+  token-crypto-key: ${FEISHU_TOKEN_CRYPTO_KEY:}
+
+# AI 翻译服务配置
+ai:
+  provider: ${AI_PROVIDER:doubao}   # anthropic | openai | deepseek | doubao
+  anthropic:
+    api-key: ${AI_ANTHROPIC_KEY:}
+    model: ${AI_ANTHROPIC_MODEL:claude-opus-4-6}
+    base-url: https://api.anthropic.com
+  openai:
+    api-key: ${AI_OPENAI_KEY:}
+    model: ${AI_OPENAI_MODEL:gpt-4o}
+    base-url: https://api.openai.com
+  deepseek:
+    api-key: ${AI_DEEPSEEK_KEY:}
+    model: ${AI_DEEPSEEK_MODEL:deepseek-chat}
+    base-url: https://api.deepseek.com
+  doubao:
+    api-key: ${AI_DOUBAO_KEY:}
+    model: ${AI_DOUBAO_MODEL:doubao-seed-2-0-pro-260215}
+    base-url: https://ark.cn-beijing.volces.com
+    chat-path: /api/v3/chat/completions
+
+# 微信公众号集成（认证订阅号，用于发布文章草稿）
+wechat:
+  app-id: ${WECHAT_APP_ID:}
+  app-secret: ${WECHAT_APP_SECRET:}
+  default-thumb-media-id: ${WECHAT_DEFAULT_THUMB_MEDIA_ID:}
+  # 微信聊天消息导入：接收账号（与上面发布账号完全独立）
+  inbound:
+    app-id: ${WECHAT_INBOUND_APP_ID:}
+    app-secret: ${WECHAT_INBOUND_APP_SECRET:}
+    token: ${WECHAT_INBOUND_TOKEN:}
+# Reddit 集成（OAuth + Submit API）
+reddit:
+  client-id: ${REDDIT_CLIENT_ID:}
+  client-secret: ${REDDIT_CLIENT_SECRET:}
+  oauth-redirect-uri: ${REDDIT_OAUTH_REDIRECT_URI:http://localhost:8080/api/v1/integrations/reddit/oauth/callback}
+  user-agent: ${REDDIT_USER_AGENT:MindIO/1.0 by mindio-app}
+  # Token 加密密钥（Base64，建议 32 bytes）；可复用 FEISHU_TOKEN_CRYPTO_KEY
+  token-crypto-key: ${REDDIT_TOKEN_CRYPTO_KEY:${FEISHU_TOKEN_CRYPTO_KEY:}}
