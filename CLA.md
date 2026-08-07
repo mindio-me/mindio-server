@@ -1,5 +1,10 @@
 # MindIO Individual Contributor License Agreement
 
+> This file is duplicated verbatim in both `mindio-web` and `mindio-server` — if you edit it, edit both
+> copies identically, and consider whether the change is material enough to warrant bumping the
+> signature-storage path in both repos' `.github/workflows/cla.yml` from `signatures/version1/` to
+> `signatures/version2/` (which would require all contributors to re-sign).
+
 Thank you for your interest in contributing to MindIO ("the Project"), maintained by Wu Fasong
 (GitHub: [@wufasong](https://github.com/wufasong)) ("Project Owner"). This Contributor License
 Agreement ("Agreement") clarifies the intellectual property license granted with Contributions from
@@ -71,6 +76,12 @@ MERCHANTABILITY, or FITNESS FOR A PARTICULAR PURPOSE.
 
 You agree to notify the Project Owner of any facts or circumstances of which You become aware that
 would make these representations inaccurate in any respect.
+
+## 8. Acceptance
+
+By commenting the sentence "I have read the CLA Document and I hereby sign the CLA" on a pull request
+in any repository of the `mindio-me` GitHub organization, You accept and agree to be bound by the terms
+of this Agreement for Your present and future Contributions.
 
 ---
 

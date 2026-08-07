@@ -12,7 +12,7 @@ you like.
 
 You don't need to do anything in advance — when you open your first pull request, a bot will
 automatically comment with instructions to sign the CLA by replying to the PR. This only needs to be
-done once; your signature is shared across all `mindio-me` repositories.
+done once; your signature is shared across `mindio-web` and `mindio-server`.
 
 ## How to contribute
 

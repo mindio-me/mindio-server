@@ -7,9 +7,13 @@ on:
 
 permissions:
   actions: write
-  contents: write
+  contents: read
   pull-requests: write
   statuses: write
+
+concurrency:
+  group: cla-assistant-${{ github.event.pull_request.number || github.event.issue.number }}
+  cancel-in-progress: false
 
 jobs:
   CLAAssistant:
@@ -20,7 +24,7 @@ jobs:
           (github.event.comment.body == 'recheck' ||
            github.event.comment.body == 'I have read the CLA Document and I hereby sign the CLA') ||
           github.event_name == 'pull_request_target'
-        uses: contributor-assistant/github-action@v2.6.1
+        uses: contributor-assistant/github-action@ca4a40a7d1004f18d9960b404b97e5f30a505a08 # v2.6.1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PERSONAL_ACCESS_TOKEN: ${{ secrets.CLA_PAT }}
@@ -28,7 +32,7 @@ jobs:
           path-to-signatures: 'signatures/version1/cla.json'
           path-to-document: 'https://github.com/mindio-me/mindio-server/blob/main/CLA.md'
           branch: 'main'
-          allowlist: bot*
+          allowlist: dependabot[bot],renovate[bot],github-actions[bot]
           remote-organization-name: 'mindio-me'
           remote-repository-name: 'mindio-cla-signatures'
           create-file-commit-message: 'chore: create CLA signature file'
