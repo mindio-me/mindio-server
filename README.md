@@ -45,3 +45,4 @@ Some internal package names and configuration keys still use `worknotes` for com
 
 Contributions are welcome! See [CONTRIBUTING.md](CONTRIBUTING.md) for how to get started. Pull
 requests require agreeing to our [Contributor License Agreement](CLA.md).
+<!-- cla verification, will be closed -->
