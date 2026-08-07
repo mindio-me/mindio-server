@@ -40,3 +40,8 @@ Override it with `SPRING_DATASOURCE_URL`, `DB_USERNAME`, and `DB_PASSWORD` when 
 ## Naming
 
 Some internal package names and configuration keys still use `worknotes` for compatibility. New product deployments should use the `mindio_app` database, while the older `worknotes` database name is reserved for personal/legacy use. User-facing product content should use `MindIO`.
+
+## Contributing
+
+Contributions are welcome! See [CONTRIBUTING.md](CONTRIBUTING.md) for how to get started. Pull
+requests require agreeing to our [Contributor License Agreement](CLA.md).
