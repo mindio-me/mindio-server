@@ -80,7 +80,7 @@ would make these representations inaccurate in any respect.
 ## 8. Acceptance
 
 By commenting the sentence "I have read the CLA Document and I hereby sign the CLA" on a pull request
-in any repository of the `mindio-me` GitHub organization, You accept and agree to be bound by the terms
+in `mindio-web` or `mindio-server`, You accept and agree to be bound by the terms
 of this Agreement for Your present and future Contributions.
 
 ---
